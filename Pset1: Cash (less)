@@ -1,0 +1,39 @@
+// Introduction to greedy algorithms. If a customer at a store is owed change after a purchase, what is the smallest number of coins the cashier can give? 
+// Program takes input from a user as a float and computes the smallest number of coins to create that change.
+
+#include <stdio.h>
+#include <cs50.h>
+#include <math.h>
+
+int main(void)
+{
+    // Request amount owed; ensure non-negative float
+    int amount;
+    do
+    {
+        amount = round(get_float("Change owed: $") * 100);
+    }
+    while (amount < 0);
+
+    // initialize coin counter
+    int coins = 0;
+
+    // look for quarters first
+    coins = floor(amount / 25);
+    // remainder
+    amount = amount % 25;
+
+    // repeat for dimes
+    coins = coins + floor(amount / 10);
+    amount = amount % 10;
+
+    // repeat for nickels
+    coins = coins + floor(amount / 5);
+    amount = amount % 5;
+
+    // pennies = remainder
+    coins = coins + amount;
+
+    // deliver results
+    printf("%i\n", coins);
+}
