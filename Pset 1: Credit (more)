@@ -1,0 +1,107 @@
+// Determines if a given credit card number is valid based on starting two digits and length of card. 
+
+#include <cs50.h>
+#include <stdio.h>
+#include <math.h>
+
+int main(void)
+{
+    // declare some variables
+    long input = get_long("Number: ");
+    int product = 0;
+    int sum = 0;
+
+
+    // MULTIPLY every other digit by 2, starting with second-to-last. ADD THE DIGITS TOGETHER.
+    // first iteration outside loop to get next-to-last digit
+    long flor =  floor(input / 10);
+
+    // save just the last digit, mulitply by 2
+    product = (flor % 10)*2;
+
+    // add the digits of the product: /10 = first digit, %10 = second digit
+    sum += floor(product / 10) + (product % 10);
+
+
+    //Repeat across length of card number
+    do
+    {
+        // mini-loop to chop 2x
+        for (int i = 0; i < 2; i++)
+        {
+            flor = floor(flor / 10);
+        }
+        product = (flor % 10)*2;
+        sum += floor(product / 10) + (product % 10);
+
+    }
+    while (flor > 0);
+    //printf("sum-of-products: %i\n", sum);
+
+    // reset value of flor for next step
+    flor = input;
+
+
+
+    // ADD the sum TO the DIGITS that weren't multiplied by 2.
+    // start from the last digit.
+    sum += input % 10;
+
+    // Repeat across length of card
+    do
+    {
+        // db-chop
+        for (int i = 0; i < 2; i++)
+        {
+            flor = floor(flor / 10);
+        }
+
+        // add last digit to sum
+        sum += flor % 10;
+    }
+    while (flor > 0);
+    //printf("sum with remaining digits: %i\n", sum);
+
+
+    // if sum % 10 == 0, card is valid
+    if (sum % 10 != 0)
+    {
+        printf("INVALID\n");
+    }
+    else
+    {
+        long first = input;
+        long second = input;
+        int len = log10(first) + 1;
+
+        //identify first digit
+        for (int i = 1; i < log10(input); i++)
+        {
+            first = floor(first / 10);
+        }
+
+        //identify second digit
+        for (int i = 1; i < log10(input) - 1; i++)
+        {
+            second = floor(second / 10);
+        }
+        //printf("first digit: %li\n", first);
+
+        if ((second == 34 || second == 37) & (len == 15))
+        {
+            printf("AMEX\n");
+        }
+        else if ((first == 4) & (len == 13 || len == 16))
+        {
+            printf("VISA\n");
+        }
+        else if ((second >= 51 & second <= 55) & (len == 16))
+        {
+            printf("MASTERCARD\n");
+        }
+        else
+        {
+            printf("INVALID\n");
+        }
+    }
+}
