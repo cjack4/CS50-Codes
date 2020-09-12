@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <cs50.h>
+
+int main(void)
+{
+    // initialize h (total number of rows)
+    int h;
+
+    // get positive integer
+    do
+    {
+        h = get_int("Height: ");
+    }
+    while (h < 1 || h > 8);
+
+    // print #'s
+    for (int r = 1; r <= h; r++)  // r = current row number
+    {
+        // left half of row
+        for (int s = 0; s < h - r; s++)  // spaces = height - current row number
+        {
+            printf(" ");
+        }
+        for (int b = 0; b < r; b++)  // number of #'s = current row number
+        {
+            printf("#");
+        }
+
+        // middle column
+        printf("  ");
+
+        // right half of row
+        for (int b = 0; b < r; b++)  // number of #'s = current row number
+        {
+            printf("#");
+        }
+        for (int s = 0; s < h - r; s++)  // spaces = height - current row number
+        {
+            printf(" ");
+        }
+        printf("\n");
+    }
+}
