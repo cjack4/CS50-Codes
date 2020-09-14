@@ -1,0 +1,95 @@
+// A classic word puzzle. Accepts a key from a user instructing how to substitute letters in a message. 
+// User must enter key as command-line argument in the form of 26 letters each used only once. A letter's place in order guides how to substitute within the message. 
+// For example, a key of JTREKYAVOGDXPSNCUIZLFBMWHQ means after a message's encryption, all "a"s will be printed as "j", all "b" are printed as "t", all "c"s are printed as "r", etc.
+// The key retains the upper/lowercase of the original message, only replacing the letter. Any non-alphabetic characters are reprinted exactly. 
+
+#include <cs50.h>
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main(int argc, string argv[])
+{
+    // declare some variables
+    string key;
+    char c;
+    char d;
+    int m1;
+    int m2;
+    char m3;
+    string ptext;
+
+    // Validate is one command line argument
+    if (argc != 2)
+    {
+        printf("Usage: ./substitution key\n");
+        return 1;
+    }
+
+    // Validate length of key
+    key = argv[1];
+    if (strlen(key) != 26)
+    {
+        printf("Key must contain 26 characters.\n");
+        return 1;
+    }
+
+    // Validate each element is a letter, each letter used only once
+    for (int i = 0; i < 26; i++)
+    {
+        c = key[i];
+        if (isalpha(c) == 0)
+        {
+            printf("Key must contain 26 LETTERS.\n");
+            return 1;
+        }
+
+        for (int j = i + 1; j < 26; j++)
+        {
+            d = key[j];
+            if (c == d)
+            {
+                printf("Key must contain 26 UNIQUE letters.\n");
+                return 1;
+            }
+        }
+    }
+
+
+    // get plaintext
+    ptext = get_string("plaintext: ");
+
+
+    //print out message
+    printf("ciphertext: ");
+
+    for (int i = 0, l = strlen(ptext); i < l; i++)
+    {
+        // Preserve uppercase
+        if (isupper(ptext[i]) != 0)
+        {
+            m1 = (int) ptext[i];
+            m2 = m1 - 65;
+            m3 = key[m2];
+            printf("%c", toupper(m3));
+        }
+
+        // Preserve lowercase
+        else if (islower(ptext[i]) != 0)
+        {
+            m1 = (int) ptext[i];
+            m2 = m1 - 97;
+            m3 = key[m2];
+            printf("%c", tolower(m3));
+        }
+
+        // non-alphabetic unchanged
+        else
+        {
+            printf("%c", ptext[i]);
+        }
+    }
+    printf("\n");
+    return 0;
+}
